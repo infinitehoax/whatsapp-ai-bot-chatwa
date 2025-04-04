@@ -35,7 +35,7 @@ OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
 YOUR_SITE_URL = os.getenv("YOUR_SITE_URL")
 YOUR_SITE_NAME = os.getenv("YOUR_SITE_NAME")
 # Placeholder - Replace with the actual Gemini vision model identifier on OpenRouter
-GEMINI_VISION_MODEL = os.getenv("GEMINI_VISION_MODEL", "openrouter/quasar-alpha")
+AI_MODEL = os.getenv("AI_MODEL", "openrouter/quasar-alpha")
 # --- Request Queue Management ---
 MAX_CONCURRENT_REQUESTS = 3  # Adjust as needed
 request_queue = collections.deque()
@@ -273,7 +273,7 @@ async def get_ai_response(user_message_content, history_list):
 # Function for Image-based AI responses (Vision)
 def get_ai_vision_response(prompt, image_url):
     if not OPENROUTER_API_KEY: print("Error: OPENROUTER_API_KEY not found in .env"); return "Error: AI configuration missing."
-    if not GEMINI_VISION_MODEL: print("Error: GEMINI_VISION_MODEL not set."); return "Error: Vision model not configured."
+    if not AI_MODEL: print("Error: AI_MODEL not set."); return "Error: Vision model not configured."
 
     client = OpenAI(base_url="https://openrouter.ai/api/v1", api_key=OPENROUTER_API_KEY)
 
@@ -315,7 +315,7 @@ def get_ai_vision_response(prompt, image_url):
                 print("Warning: YOUR_SITE_NAME environment variable is missing or empty. Skipping X-Title header.")
 
             completion = client.chat.completions.create(
-                model=GEMINI_VISION_MODEL,  # This defaults to openrouter/quasar-alpha
+                model=AI_MODEL,  # This defaults to openrouter/quasar-alpha
                 messages=messages,
                 max_tokens=30000,  # Adjust as needed for vision descriptions
                 extra_headers=headers
